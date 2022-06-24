@@ -12,11 +12,9 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: ostock_dev
     networks:
-      backend:
-        aliases:
-          - "database"
+      - backend
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready", "-d", "ostock_dev", "-U", "postgres" ]
+      test: [ "CMD", "pg_isready", "-d", "ostock_dev", "-U", "postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -30,9 +28,7 @@ services:
       # This value should referenced as an OS environment variable, but for ease of usage it's defined here. It should also be random string of characters.
       ENCRYPT_KEY: INSYMETRIC
     networks:
-      backend:
-        aliases:
-          - "configserver"
+      - backend
 
   licensingservice:
     image: ostock/licensing-service:0.0.1-SNAPSHOT
