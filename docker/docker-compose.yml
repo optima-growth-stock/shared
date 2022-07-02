@@ -42,10 +42,27 @@ services:
         condition: service_healthy
       configserver:
         condition: service_started
+      organizationservice:
+        condition: service_started
     networks:
       backend:
         aliases:
-          - "licenseservice"
+          - licenseservice
+
+  organizationservice:
+    image: ostock/organization-service:0.0.1-SNAPSHOT
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILE_ACTIVE: dev
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+    networks:
+      - backend
 
 
 networks:
