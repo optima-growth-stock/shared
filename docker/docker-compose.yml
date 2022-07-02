@@ -24,9 +24,20 @@ services:
     ports:
       - "8071:8071"
     environment:
-      SPRING_PROFILE_ACTIVE: dev
-      # This value should referenced as an OS environment variable, but for ease of usage it's defined here. It should also be random string of characters.
+      # This value should be referenced as an OS environment variable, but for ease of usage it's defined here. It should also be a random string of characters.
       ENCRYPT_KEY: INSYMETRIC
+    networks:
+      - backend
+
+  eurekaserver:
+    image: ostock/eurekaserver:0.0.1-SNAPSHOT
+    ports:
+      - "8070:8070"
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
+    depends_on:
+      configserver:
+        condition: service_started
     networks:
       - backend
 
@@ -42,7 +53,7 @@ services:
         condition: service_healthy
       configserver:
         condition: service_started
-      organizationservice:
+      eurekaserver:
         condition: service_started
     networks:
       backend:
@@ -60,6 +71,8 @@ services:
       database:
         condition: service_healthy
       configserver:
+        condition: service_started
+      eurekaserver:
         condition: service_started
     networks:
       - backend
