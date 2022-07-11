@@ -24,7 +24,8 @@ services:
     ports:
       - "8071:8071"
     environment:
-      # This value should be referenced as an OS environment variable, but for ease of usage it's defined here. It should also be a random string of characters.
+      # This value is basically the master password for the project. Because of that it should be referenced as an OS
+      # environment variable, but for ease of usage it's defined here. It should also be a random string of characters.
       ENCRYPT_KEY: INSYMETRIC
     networks:
       - backend
