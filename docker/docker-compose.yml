@@ -42,6 +42,18 @@ services:
     networks:
       - backend
 
+  gatewayserver:
+    image: ostock/gatewayserver:0.0.1-SNAPSHOT
+    ports:
+      - "8072:8072"
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
+    depends_on:
+      configserver:
+        condition: service_started
+    networks:
+      - backend
+
   licensingservice:
     image: ostock/licensing-service:0.0.1-SNAPSHOT
     ports:
