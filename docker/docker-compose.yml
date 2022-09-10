@@ -54,10 +54,30 @@ services:
     networks:
       - backend
 
+  keycloak:
+    image: jboss/keycloak
+    restart: always
+    environment:
+      KEYCLOAK_VERSION: 6.0.1
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      DB_VENDOR: h2
+    volumes:
+      - ./keycloak-config/keycloak-dev-config.json:/opt/jboss/keycloak/keycloak-dev-config.json
+    command:
+      - "-b 0.0.0.0"
+      - "-Dkeycloak.import=/opt/jboss/keycloak/keycloak-dev-config.json"
+      - "-Dkeycloak.profile.feature.scripts=enabled"
+      - "-Dkeycloak.profile.feature.upload_scripts=enabled"
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+
   licensingservice:
     image: ostock/licensing-service:0.0.1-SNAPSHOT
     ports:
-      - "8080:8080"
+      - "8180:8080"
     environment:
       SPRING_PROFILE_ACTIVE: dev
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
