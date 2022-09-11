@@ -61,6 +61,9 @@ services:
       KEYCLOAK_VERSION: 6.0.1
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
+      # This field is needed if keycloak server is in docker bridge network and the fronted app is trying to access it from the outside. The issuer in JWT body is set to this value.
+      # It's value needs to match the internal hostname (keycloak), otherwise you will have mismatching issuers when trying to authenticate.
+      KEYCLOAK_HOSTNAME: keycloak
       DB_VENDOR: h2
     volumes:
       - ./keycloak-config/keycloak-dev-config.json:/opt/jboss/keycloak/keycloak-dev-config.json
