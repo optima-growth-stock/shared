@@ -49,7 +49,11 @@ services:
     environment:
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
     depends_on:
+      database:
+        condition: service_healthy
       configserver:
+        condition: service_started
+      eurekaserver:
         condition: service_started
     networks:
       - backend
