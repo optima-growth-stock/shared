@@ -55,6 +55,8 @@ services:
         condition: service_started
       eurekaserver:
         condition: service_started
+      logstash:
+        condition: service_started
     networks:
       - backend
 
@@ -143,6 +145,9 @@ services:
       ELASTICSEARCH_URL: "http://elasticsearch:9300"
     ports:
       - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_started
     networks:
       - backend
 
@@ -154,10 +159,11 @@ services:
       - ./logstash-config:/etc/logstash/conf.d
     ports:
       - "5000:5000"
+    depends_on:
+      elasticsearch:
+        condition: service_started
     networks:
-      backend:
-        aliases:
-          - logstash
+      - backend
 
   licensingservice:
     image: ostock/licensing-service:0.0.1-SNAPSHOT
@@ -193,6 +199,8 @@ services:
       configserver:
         condition: service_started
       eurekaserver:
+        condition: service_started
+      logstash:
         condition: service_started
     networks:
       - backend
