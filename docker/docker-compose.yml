@@ -47,6 +47,7 @@ services:
     ports:
       - "8072:8072"
     environment:
+      SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
     depends_on:
       database:
@@ -165,12 +166,25 @@ services:
     networks:
       - backend
 
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    depends_on:
+      - elasticsearch
+    environment:
+      - STORAGE_TYPE=elasticsearch
+      - "ES_HOSTS=elasticsearch:9300"
+    ports:
+      - "9411:9411"
+    networks:
+      - backend
+
   licensingservice:
     image: ostock/licensing-service:0.0.1-SNAPSHOT
     ports:
       - "8180:8080"
     environment:
-      SPRING_PROFILE_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
     depends_on:
       database:
@@ -191,7 +205,7 @@ services:
     ports:
       - "8081:8081"
     environment:
-      SPRING_PROFILE_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: dev
       SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
     depends_on:
       database:
