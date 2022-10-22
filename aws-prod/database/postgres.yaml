@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: database
+  name: database
+spec:
+  externalName: ostock-database.cxivevkrlzty.eu-west-1.rds.amazonaws.com
+  selector:
+    app: database
+  type: ExternalName
+status:
+  loadBalancer: {}

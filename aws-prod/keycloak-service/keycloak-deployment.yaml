@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-deployment
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - image: jboss/keycloak
+          name: keycloak
+          env:
+          - name: KEYCLOAK_VERSION
+            value: 6.0.1
+          - name: KEYCLOAK_USER
+            value: admin
+          - name: KEYCLOAK_PASSWORD
+            value: admin
+          - name: DB_VENDOR
+            value: h2
+          - name: KEYCLOAK_HOSTNAME
+            value: keycloak
+          - name: DB_VENDOR
+            value: POSTGRES
+          - name: DB_ADDR
+            value: database
+          - name: DB_DATABASE
+            value: postgres
+          - name: DB_USER
+            value: postgres
+          - name: DB_SCHEMA
+            value: public
+          - name: DB_PASSWORD
+            value: 3Qn$Z&Lk8scSHw4q
+          ports:
+          - containerPort: 8080 
